@@ -93,13 +93,13 @@ async def show_report(message: Message):
             if income_data:
                 report_text += "\n💰 **So'ngi daromadlar:**\n"
                 for i, inc in enumerate(income_data[:3], 1):
-                    report_text += f"{i}. {inc[1]} so'm - {inc[2] or 'Izoh yo\'q'}\n"
+                    report_text += f"{i}. {inc[1]} so'm - {inc[2] or 'Izoh yoq'}\n"
             
             # Show last 3 expense entries  
             if expenses_data:
                 report_text += "\n💸 **So'ngi harajatlar:**\n"
                 for i, exp in enumerate(expenses_data[:3], 1):
-                    report_text += f"{i}. {exp[1]} so'm - {exp[2] or 'Izoh yo\'q'}\n"
+                    report_text += f"{i}. {exp[1]} so'm - {exp[2] or 'Izoh yoq'}\n"
         
         # If no data exists
         if not income_data and not expenses_data:

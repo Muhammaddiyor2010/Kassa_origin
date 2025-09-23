@@ -67,7 +67,7 @@ async def show_expenses(message: Message):
                 expense_entry = f"📌 #{i}\n"
                 expense_entry += f"💵 Summa: {summa} so'm\n"
                 expense_entry += f"📂 Kategoriya: {kategoriya}\n"
-                expense_entry += f"📝 Izoh: {izoh or 'Izoh yo\'q'}\n"
+                expense_entry += f"📝 Izoh: {izoh or 'Izoh yoq'}\n"
                 expense_entry += "─" * 20 + "\n\n"
                 
                 if len(current_chunk + expense_entry) > 3800:

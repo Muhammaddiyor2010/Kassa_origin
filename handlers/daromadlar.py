@@ -48,7 +48,7 @@ async def show_income(message: Message):
             income_text += f"📌 #{i}\n"
             income_text += f"💵 Summa: {summa} so'm\n"
             income_text += f"📂 Kategoriya: {kategoriya}\n"
-            income_text += f"📝 Izoh: {izoh or 'Izoh yo\'q'}\n"
+            income_text += f"📝 Izoh: {izoh or 'Izoh yoq'}\n"
             income_text += f"🆔 ID: {income_id}\n"
             income_text += "─" * 30 + "\n\n"
         
@@ -67,7 +67,7 @@ async def show_income(message: Message):
                 income_entry = f"📌 #{i}\n"
                 income_entry += f"💵 Summa: {summa} so'm\n"
                 income_entry += f"📂 Kategoriya: {kategoriya}\n"
-                income_entry += f"📝 Izoh: {izoh or 'Izoh yo\'q'}\n"
+                income_entry += f"📝 Izoh: {izoh or 'Izoh yoq'}\n"
                 income_entry += "─" * 20 + "\n\n"
                 
                 if len(current_chunk + income_entry) > 3800:
