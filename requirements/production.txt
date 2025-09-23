@@ -1,0 +1,9 @@
+-r base.txt
+
+# Production specific dependencies
+gunicorn==21.2.0
+uvicorn==0.24.0
+psycopg2-binary==2.9.9
+redis==5.0.1
+celery==5.3.4
+supervisor==4.2.5
