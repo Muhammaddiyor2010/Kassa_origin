@@ -199,14 +199,14 @@ async def show_user_info(callback: CallbackQuery):
 📞 **Telefon:** {user_info[3] or 'Kiritilmagan'}
 🌐 **Til:** {user_info[2] or 'uz'}
 💎 **Tarif:** {'PRO' if plan == 'pro' else 'TEKIN'}
-👑 **Admin:** {'Ha' if db.is_admin(user_id) else 'Yo\'q'}
+👑 **Admin:** {'Ha' if db.is_admin(user_id) else 'Yoq'}
 🚀 **Start soni:** {user_info[6] if len(user_info) > 6 else 0}
 
 📊 **Statistika:**
 • Daromadlar: {len(income_data) if income_data else 0} ta
 • Harajatlar: {len(expenses_data) if expenses_data else 0} ta
 
-🔑 **Pro Token:** {pro_token[:8] + '...' + pro_token[-4:] if pro_token and len(pro_token) > 12 else pro_token or 'Yo\'q'}"""
+🔑 **Pro Token:** {pro_token[:8] + '...' + pro_token[-4:] if pro_token and len(pro_token) > 12 else pro_token or 'Yoq'}"""
     
     # Create action buttons
     action_keyboard = InlineKeyboardMarkup(
@@ -874,7 +874,7 @@ async def show_admins(message: Message):
             user_id, name, username, created_at = admin
             admins_text += f"{i}. **{name}**\n"
             admins_text += f"   🆔 ID: `{user_id}`\n"
-            admins_text += f"   👤 Username: @{username or 'Yo\'q'}\n"
+            admins_text += f"   👤 Username: @{username or 'Yoq'}\n"
             admins_text += f"   📅 Qo'shilgan: {created_at}\n\n"
         
         await message.reply(admins_text, parse_mode="Markdown")
