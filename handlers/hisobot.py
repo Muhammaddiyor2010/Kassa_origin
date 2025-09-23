@@ -103,7 +103,7 @@ async def show_report(message: Message):
         
         # If no data exists
         if not income_data and not expenses_data:
-            report_text = """📊 **FINANCIAL REPORT** 📊
+            report_text = f"""📊 **FINANCIAL REPORT** 📊
 
 👤 **Foydalanuvchi:** {user_name}
 📅 **Sana:** {datetime.now().strftime('%d.%m.%Y %H:%M')}
@@ -120,10 +120,7 @@ Hali hech qanday daromad yoki harajat kiritilmagan.
 • "Ovqat uchun 50000 so'm sarf qildim"  
 • Ovozli xabar yuboring
 
-📊 Hisobotni ko'rish uchun ma'lumotlar kiritilgandan keyin qayta urinib ko'ring.""".format(
-                user_name=user_name,
-                datetime=datetime
-            )
+📊 Hisobotni ko'rish uchun ma'lumotlar kiritilgandan keyin qayta urinib ko'ring."""
         
         # Send the report
         await message.reply(report_text, reply_markup=main_menu, parse_mode="Markdown")
