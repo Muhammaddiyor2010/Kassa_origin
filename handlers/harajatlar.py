@@ -48,7 +48,7 @@ async def show_expenses(message: Message):
             expenses_text += f"📌 #{i}\n"
             expenses_text += f"💵 Summa: {summa} so'm\n"
             expenses_text += f"📂 Kategoriya: {kategoriya}\n"
-            expenses_text += f"📝 Izoh: {izoh or 'Izoh yo\'q'}\n"
+            expenses_text += f"📝 Izoh: {izoh or 'Izoh yoq'}\n"
             expenses_text += f"🆔 ID: {expense_id}\n"
             expenses_text += "─" * 30 + "\n\n"
         
