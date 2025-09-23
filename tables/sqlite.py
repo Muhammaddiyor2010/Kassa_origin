@@ -40,6 +40,7 @@ class Database:
             plan varchar(10) DEFAULT 'free',
             pro_token varchar(255) NULL,
             ai_usage_count int DEFAULT 0,
+            is_admin BOOLEAN DEFAULT FALSE,
             PRIMARY KEY (id)
             );
         """

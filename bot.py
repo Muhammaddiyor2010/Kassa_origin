@@ -33,8 +33,7 @@ async def main():
     db.create_table_tokens()
     db.create_admin_table()
     db.create_admin_tokens_table()
-    # Note: plan, pro_token, ai_usage_count columns are already in create_table_users()
-    db.add_admin_columns()
+    # Note: plan, pro_token, ai_usage_count, is_admin columns are already in create_table_users()
     db.add_pro_token_created_by_column()
     db.add_pro_token_is_active_column()
     
