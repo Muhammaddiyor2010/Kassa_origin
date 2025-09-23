@@ -32,6 +32,10 @@ from handlers.sozlamalar import sozlamalar_router
 from handlers.admin import admin_router
 from loader import db
 
+# Create logs directory if it doesn't exist
+log_dir = Path(LOG_FILE).parent
+log_dir.mkdir(exist_ok=True)
+
 # Configure logging
 logging.basicConfig(
     level=getattr(logging, LOG_LEVEL),
@@ -177,13 +181,15 @@ def main():
         logger.error("WEBHOOK_URL is not set!")
         sys.exit(1)
     
-    # Create logs directory
+    # Create necessary directories
     log_dir = Path(LOG_FILE).parent
     log_dir.mkdir(exist_ok=True)
     
-    # Create uploads directory
     upload_dir = Path("uploads")
     upload_dir.mkdir(exist_ok=True)
+    
+    data_dir = Path("data")
+    data_dir.mkdir(exist_ok=True)
     
     logger.info(f"Starting server on {WEBAPP_HOST}:{WEBAPP_PORT}")
     logger.info(f"Environment: {ENVIRONMENT}")

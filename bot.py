@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from pathlib import Path
 
 from aiogram import  Dispatcher
 
@@ -17,6 +18,11 @@ logger = logging.getLogger(__name__)
 
 
 async def main():
+    # Create necessary directories
+    Path("logs").mkdir(exist_ok=True)
+    Path("uploads").mkdir(exist_ok=True)
+    Path("data").mkdir(exist_ok=True)
+    
     logging.basicConfig(
         level=logging.INFO,
        
