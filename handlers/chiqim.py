@@ -26,17 +26,21 @@ async def audio_msg(message: Message):
     
     file = await bot.get_file(file_id)
 
-    file_obj = io.BytesIO()
- 
-
-    file_obj.seek(0)
-
+    # Create temporary file for audio
     with tempfile.NamedTemporaryFile(suffix=".ogg", delete=False) as temp_file:
-        await bot.download_file(file.file_path, destination=temp_file)
         temp_file_path = temp_file.name
+    
+    # Download the audio file to the temporary file
+    await bot.download_file(file.file_path, destination=temp_file_path)
+
+    # Send loading message
+    loading_msg = await message.reply("🎤 Audio fayl qayta ishlanmoqda...")
 
     try:
         chiqimtext = gemini.get_text(temp_file_path)
+        
+        # Delete loading message and send transcription
+        await loading_msg.delete()
         await message.reply(f"🎤 Transkripsiya: {chiqimtext}")
         
         # Check if transcribed text contains money-related keywords
@@ -119,12 +123,20 @@ async def audio_msg(message: Message):
         # await message.reply(f" {response.text}")
 
     except Exception as e:
-  # Temporary file'ni o'chiramiz
-        print(f"errors: {e}")
-        await message.reply(f"error: {e}")
+        print(f"Audio processing error: {e}")
+        # Delete loading message if it exists
+        try:
+            await loading_msg.delete()
+        except:
+            pass
+        await message.reply("❌ Xato: Audio faylni matnga aylantirishda muammo yuzaga keldi. Iltimos qayta urinib ko'ring.")
     finally:
-      
-        os.unlink(temp_file_path)
+        # Clean up temporary file
+        try:
+            if os.path.exists(temp_file_path):
+                os.unlink(temp_file_path)
+        except Exception as cleanup_error:
+            print(f"Error cleaning up temp file: {cleanup_error}")
 
 @chiqim_router.message(F.text & ~F.text.startswith('/') & ~F.text.in_(["💸 Harajatlari", "💰 Daromadlari", "📊 Hisobot", "⚙️ Sozlamalar", "📊 Statistika", "👥 Foydalanuvchilar", "📢 Reklama yuborish", "👑 Adminlar", "🔙 Asosiy menyu", "👤 Profil ma'lumotlari", "💎 Tarif", "💎 PRO olish", "👑 Admin olish", "🗑️ Ma'lumotlarni tozalash", "🗑️ Daromadlarni o'chirish", "🗑️ Harajatlarni o'chirish", "🗑️ Barcha ma'lumotlarni o'chirish", "ℹ️ Yordam", "🔙 Sozlamalar"]))
 async def text_msg(message: Message):

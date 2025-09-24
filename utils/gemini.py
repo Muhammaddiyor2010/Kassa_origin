@@ -66,6 +66,18 @@ class Geminiutils():
             str: Transcribed text
         """
         try:
+            # Check if file exists
+            import os
+            if not os.path.exists(audio_path):
+                print(f"Audio file not found: {audio_path}")
+                return "Xato: Audio fayl topilmadi"
+            
+            # Check file size (Gemini has limits)
+            file_size = os.path.getsize(audio_path)
+            if file_size > 20 * 1024 * 1024:  # 20MB limit
+                print(f"Audio file too large: {file_size} bytes")
+                return "Xato: Audio fayl juda katta (20MB dan kichik bo'lishi kerak)"
+            
             # Upload the audio file to Gemini
             myfile = self.client.files.upload(path=audio_path)
             prompt = "Ushbu o'zbek tilidagi audioni matnga aylantir"
@@ -78,7 +90,12 @@ class Geminiutils():
                 )]
             )
 
-            return response.text
+            if response and response.text:
+                return response.text.strip()
+            else:
+                print("Empty response from Gemini")
+                return "Xato: AI javob bermadi"
+                
         except Exception as e:
             print(f"Error in get_text: {e}")
             return "Xato: Audio faylni matnga aylantirishda muammo yuzaga keldi"
