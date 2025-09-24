@@ -99,18 +99,67 @@ class Geminiutils():
         except Exception as e:
             print(f"Error in get_text: {e}")
             error_str = str(e)
+            error_type = type(e).__name__
             
-            # Check for specific error types
+            # Check for specific error types and provide detailed messages
             if "FAILED_PRECONDITION" in error_str and "location is not supported" in error_str:
-                return "❌ Xato: Google AI xizmati sizning mintaqangizda ishlamaydi. Iltimos VPN ishlatib qayta urinib ko'ring yoki matnli xabar yuboring."
+                return f"""❌ **Geografik cheklov xatosi**
+
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato kodi: `FAILED_PRECONDITION`
+• Sabab: `User location is not supported for the API use`
+
+🔧 **Yechimlar:**
+• VPN ishlatib qayta urinib ko'ring
+• Matnli xabar yuboring (audio o'rniga)
+• Administrator bilan bog'laning"""
             elif "400" in error_str:
-                return "❌ Xato: API so'rovida xatolik. Iltimos qayta urinib ko'ring."
+                return f"""❌ **API so'rov xatosi**
+
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato kodi: `400`
+• Xato xabari: `{error_str}`
+
+🔧 **Yechimlar:**
+• Audio fayl formatini tekshiring
+• Fayl hajmini tekshiring (20MB dan kichik)
+• Qayta urinib ko'ring"""
             elif "403" in error_str:
-                return "❌ Xato: API kaliti noto'g'ri yoki cheklangan. Administrator bilan bog'laning."
+                return f"""❌ **API ruxsat xatosi**
+
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato kodi: `403`
+• Xato xabari: `{error_str}`
+
+🔧 **Yechimlar:**
+• API kaliti noto'g'ri yoki cheklangan
+• Administrator bilan bog'laning"""
             elif "429" in error_str:
-                return "❌ Xato: API limiti tugagan. Iltimos biroz kutib qayta urinib ko'ring."
+                return f"""❌ **API limit xatosi**
+
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato kodi: `429`
+• Xato xabari: `{error_str}`
+
+🔧 **Yechimlar:**
+• Biroz kutib qayta urinib ko'ring
+• Matnli xabar yuboring (audio o'rniga)"""
             else:
-                return "❌ Xato: Audio faylni matnga aylantirishda muammo yuzaga keldi. Iltimos matnli xabar yuboring."
+                return f"""❌ **Audio transkripsiya xatosi**
+
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato xabari: `{error_str}`
+
+🔧 **Yechimlar:**
+• Matnli xabar yuboring (audio o'rniga)
+• Audio fayl formatini tekshiring
+• Internet aloqasini tekshiring
+• Administrator bilan bog'laning"""
 
 
     def add_chiqimlar(self, text):
@@ -316,28 +365,72 @@ class Geminiutils():
         except Exception as e:
             print(f"Error in process_text_message: {e}")
             error_str = str(e)
+            error_type = type(e).__name__
             
-            # Check for specific error types
+            # Check for specific error types and provide detailed messages
             if "FAILED_PRECONDITION" in error_str and "location is not supported" in error_str:
-                return """❌ Xato: Google AI xizmati sizning mintaqangizda ishlamaydi.
+                return f"""❌ **Geografik cheklov xatosi**
 
-🔧 Yechimlar:
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato kodi: `FAILED_PRECONDITION`
+• Sabab: `User location is not supported for the API use`
+
+🔧 **Yechimlar:**
 • VPN ishlatib qayta urinib ko'ring
 • Matnli xabar yuboring (audio o'rniga)
 • Administrator bilan bog'laning
 
-📝 Matnli format:
+📝 **Matnli format:**
 • "Ovqat uchun 50000 so'm sarf qildim"
 • "Ish haqim 2000000 so'm oldim"
 • "Transport uchun 15000 so'm to'ladim" """
             elif "400" in error_str:
-                return "❌ Xato: API so'rovida xatolik. Iltimos qayta urinib ko'ring."
+                return f"""❌ **API so'rov xatosi**
+
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato kodi: `400`
+• Xato xabari: `{error_str}`
+
+🔧 **Yechimlar:**
+• Xabarni qayta yozing
+• Summa va kategoriyani aniq belgilang
+• Qayta urinib ko'ring"""
             elif "403" in error_str:
-                return "❌ Xato: API kaliti noto'g'ri yoki cheklangan. Administrator bilan bog'laning."
+                return f"""❌ **API ruxsat xatosi**
+
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato kodi: `403`
+• Xato xabari: `{error_str}`
+
+🔧 **Yechimlar:**
+• API kaliti noto'g'ri yoki cheklangan
+• Administrator bilan bog'laning"""
             elif "429" in error_str:
-                return "❌ Xato: API limiti tugagan. Iltimos biroz kutib qayta urinib ko'ring."
+                return f"""❌ **API limit xatosi**
+
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato kodi: `429`
+• Xato xabari: `{error_str}`
+
+🔧 **Yechimlar:**
+• Biroz kutib qayta urinib ko'ring
+• Matnli xabar yuboring"""
             else:
-                return f"❌ Xato: {str(e)}"
+                return f"""❌ **Matn qayta ishlash xatosi**
+
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato xabari: `{error_str}`
+
+🔧 **Yechimlar:**
+• Xabarni qayta yozing
+• Summa va kategoriyani aniq belgilang
+• Internet aloqasini tekshiring
+• Administrator bilan bog'laning"""
 
     def format_report_message(self, record_type: str, record_data: tuple, user_name: str = "Foydalanuvchi"):
         """

@@ -145,20 +145,33 @@ Matnli xabar yuboring:
         except:
             pass
         
-        # Provide helpful error message with fallback option
-        await message.reply("""❌ Xato: Audio faylni matnga aylantirishda muammo yuzaga keldi.
+        # Get detailed error information
+        error_str = str(e)
+        error_type = type(e).__name__
+        
+        # Provide detailed error message with specific solutions
+        error_message = f"""❌ **Audio qayta ishlashda xato yuz berdi**
+
+🔍 **Xato tafsilotlari:**
+• Xato turi: `{error_type}`
+• Xato xabari: `{error_str}`
 
 🔧 **Yechimlar:**
 • Matnli xabar yuboring (audio o'rniga)
 • VPN ishlatib qayta urinib ko'ring
 • Internet aloqasini tekshiring
+• Audio fayl hajmini tekshiring (20MB dan kichik bo'lishi kerak)
 
 📝 **Matnli format:**
 • "Ovqat uchun 50000 so'm sarf qildim"
 • "Ish haqim 2000000 so'm oldim"
 • "Transport uchun 15000 so'm to'ladim"
 
-💡 **Maslahat:** Matnli xabar yuborish tezroq va ishonchliroq!""", reply_markup=main_menu)
+💡 **Maslahat:** Matnli xabar yuborish tezroq va ishonchliroq!
+
+🆘 **Agar muammo davom etsa:** Administrator bilan bog'laning"""
+        
+        await message.reply(error_message, reply_markup=main_menu)
     finally:
         # Clean up temporary file
         try:
