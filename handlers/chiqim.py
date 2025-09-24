@@ -43,6 +43,21 @@ async def audio_msg(message: Message):
         await loading_msg.delete()
         await message.reply(f"🎤 Transkripsiya: {chiqimtext}")
         
+        # Check if transcription was successful (not an error message)
+        if chiqimtext.startswith("❌ Xato:") or chiqimtext.startswith("Xato:"):
+            # If transcription failed, suggest text input
+            await message.reply(f"""{chiqimtext}
+
+💡 **Yechim:**
+Matnli xabar yuboring:
+• "Ovqat uchun 50000 so'm sarf qildim"
+• "Ish haqim 2000000 so'm oldim"
+• "Transport uchun 15000 so'm to'ladim"
+
+📝 Yoki bir xabarda ikkalasini ham:
+• "Bugun ovqat uchun 50000 so'm sarf qildim va ish haqim 2000000 so'm oldim" """, reply_markup=main_menu)
+            return
+        
         # Check if transcribed text contains money-related keywords
         text_lower = chiqimtext.lower().strip()
         money_keywords = ['so\'m', 'sum', 'pul', 'harajat', 'chiqim', 'daromad', 'kirim', 'olim', 'berdim', 'sarfladim', 'to\'ladim', 'oldim', 'ish haqi', 'oylik', 'va', 'ham', 'bugun', 'kecha']
@@ -129,7 +144,21 @@ async def audio_msg(message: Message):
             await loading_msg.delete()
         except:
             pass
-        await message.reply("❌ Xato: Audio faylni matnga aylantirishda muammo yuzaga keldi. Iltimos qayta urinib ko'ring.")
+        
+        # Provide helpful error message with fallback option
+        await message.reply("""❌ Xato: Audio faylni matnga aylantirishda muammo yuzaga keldi.
+
+🔧 **Yechimlar:**
+• Matnli xabar yuboring (audio o'rniga)
+• VPN ishlatib qayta urinib ko'ring
+• Internet aloqasini tekshiring
+
+📝 **Matnli format:**
+• "Ovqat uchun 50000 so'm sarf qildim"
+• "Ish haqim 2000000 so'm oldim"
+• "Transport uchun 15000 so'm to'ladim"
+
+💡 **Maslahat:** Matnli xabar yuborish tezroq va ishonchliroq!""", reply_markup=main_menu)
     finally:
         # Clean up temporary file
         try:

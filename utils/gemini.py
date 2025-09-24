@@ -98,7 +98,19 @@ class Geminiutils():
                 
         except Exception as e:
             print(f"Error in get_text: {e}")
-            return "Xato: Audio faylni matnga aylantirishda muammo yuzaga keldi"
+            error_str = str(e)
+            
+            # Check for specific error types
+            if "FAILED_PRECONDITION" in error_str and "location is not supported" in error_str:
+                return "❌ Xato: Google AI xizmati sizning mintaqangizda ishlamaydi. Iltimos VPN ishlatib qayta urinib ko'ring yoki matnli xabar yuboring."
+            elif "400" in error_str:
+                return "❌ Xato: API so'rovida xatolik. Iltimos qayta urinib ko'ring."
+            elif "403" in error_str:
+                return "❌ Xato: API kaliti noto'g'ri yoki cheklangan. Administrator bilan bog'laning."
+            elif "429" in error_str:
+                return "❌ Xato: API limiti tugagan. Iltimos biroz kutib qayta urinib ko'ring."
+            else:
+                return "❌ Xato: Audio faylni matnga aylantirishda muammo yuzaga keldi. Iltimos matnli xabar yuboring."
 
 
     def add_chiqimlar(self, text):
@@ -303,7 +315,29 @@ class Geminiutils():
                 
         except Exception as e:
             print(f"Error in process_text_message: {e}")
-            return f"❌ Xato: {str(e)}"
+            error_str = str(e)
+            
+            # Check for specific error types
+            if "FAILED_PRECONDITION" in error_str and "location is not supported" in error_str:
+                return """❌ Xato: Google AI xizmati sizning mintaqangizda ishlamaydi.
+
+🔧 Yechimlar:
+• VPN ishlatib qayta urinib ko'ring
+• Matnli xabar yuboring (audio o'rniga)
+• Administrator bilan bog'laning
+
+📝 Matnli format:
+• "Ovqat uchun 50000 so'm sarf qildim"
+• "Ish haqim 2000000 so'm oldim"
+• "Transport uchun 15000 so'm to'ladim" """
+            elif "400" in error_str:
+                return "❌ Xato: API so'rovida xatolik. Iltimos qayta urinib ko'ring."
+            elif "403" in error_str:
+                return "❌ Xato: API kaliti noto'g'ri yoki cheklangan. Administrator bilan bog'laning."
+            elif "429" in error_str:
+                return "❌ Xato: API limiti tugagan. Iltimos biroz kutib qayta urinib ko'ring."
+            else:
+                return f"❌ Xato: {str(e)}"
 
     def format_report_message(self, record_type: str, record_data: tuple, user_name: str = "Foydalanuvchi"):
         """
