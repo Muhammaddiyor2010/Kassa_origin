@@ -48,9 +48,8 @@ async def check_admin_access(message: Message) -> bool:
     """Check if user has admin access with password verification"""
     user_id = message.from_user.id
     
-    if not is_admin(user_id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        return False
+    # Admin check removed - password-only access
+    return True
     
     # For now, we'll allow access if user is admin
     # Password verification is handled in the main admin command
@@ -119,9 +118,7 @@ async def show_admin_stats(message: Message):
     """
     Show detailed statistics
     """
-    if not is_admin(message.from_user.id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        return
+    # Admin check removed - password-only access
     
     # Get detailed statistics
     total_users = db.get_user_count()
@@ -166,9 +163,7 @@ async def show_users(message: Message):
     """
     Show users management
     """
-    if not is_admin(message.from_user.id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        return
+    # Admin check removed - password-only access
     
     all_users = db.get_all_users() or []
     
@@ -213,9 +208,7 @@ async def show_user_info(callback: CallbackQuery):
     """
     Show detailed user information
     """
-    if not is_admin(callback.from_user.id):
-        await callback.answer("❌ Sizda admin huquqi yo'q!")
-        return
+    # Admin check removed - password-only access
     
     user_id = int(callback.data.split("_")[2])
     user_info = db.select_user(id=user_id)
@@ -274,9 +267,7 @@ async def toggle_user_plan(callback: CallbackQuery):
     """
     Toggle user plan between free and pro
     """
-    if not is_admin(callback.from_user.id):
-        await callback.answer("❌ Sizda admin huquqi yo'q!")
-        return
+    # Admin check removed - password-only access
     
     user_id = int(callback.data.split("_")[2])
     current_plan, _ = db.get_user_plan(user_id)
@@ -296,9 +287,7 @@ async def toggle_user_admin(callback: CallbackQuery):
     """
     Toggle user admin status
     """
-    if not is_admin(callback.from_user.id):
-        await callback.answer("❌ Sizda admin huquqi yo'q!")
-        return
+    # Admin check removed - password-only access
     
     user_id = int(callback.data.split("_")[2])
     is_admin_user = db.is_admin(user_id)
@@ -322,9 +311,7 @@ async def start_broadcast(message: Message, state: FSMContext):
     """
     Start broadcast message process
     """
-    if not is_admin(message.from_user.id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        return
+    # Admin check removed - password-only access
     
     await message.reply(
         "📢 **REKLAMA YUBORISH** 📢\n\n"
@@ -580,9 +567,7 @@ async def show_admin_tokens(message: Message):
     """
     Show admin token management
     """
-    if not is_admin(message.from_user.id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        return
+    # Admin check removed - password-only access
     
     try:
         # Get all admin tokens
@@ -679,9 +664,7 @@ async def show_pro_tokens(message: Message):
     """
     Show PRO token management
     """
-    if not is_admin(message.from_user.id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        return
+    # Admin check removed - password-only access
     
     try:
         # Get all PRO tokens
@@ -850,9 +833,7 @@ async def test_callback_button(message: Message):
     """
     Test callback button handler
     """
-    if not is_admin(message.from_user.id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        return
+    # Admin check removed - password-only access
     
     try:
         test_text = """🧪 **CALLBACK TEST** 🧪
@@ -895,9 +876,7 @@ async def show_admins(message: Message):
     """
     Show all admins
     """
-    if not is_admin(message.from_user.id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        return
+    # Admin check removed - password-only access
     
     try:
         # Get all admins
