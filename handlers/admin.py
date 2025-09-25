@@ -59,16 +59,9 @@ async def check_admin_access(message: Message) -> bool:
 @admin_router.message(Command("admin"))
 async def admin_panel(message: Message, state: FSMContext):
     """
-    Show admin panel with password protection
+    Show admin panel with password protection only
     """
-    user_id = message.from_user.id
-    
-    # Check if user is admin first
-    if not is_admin(user_id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        return
-    
-    # Ask for password
+    # Ask for password directly - no ID check
     await message.reply("🔐 Admin panelga kirish uchun parol kiriting:")
     await state.set_state(AdminStates.waiting_for_admin_password)
 
