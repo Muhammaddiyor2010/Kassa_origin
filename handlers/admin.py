@@ -14,6 +14,7 @@ class AdminStates(StatesGroup):
     waiting_for_broadcast = State()
     waiting_for_user_id = State()
     waiting_for_admin_id = State()
+    waiting_for_admin_password = State()
 
 # Admin panel keyboard
 admin_menu = ReplyKeyboardMarkup(
@@ -43,16 +44,55 @@ def is_admin(user_id: int) -> bool:
     """Check if user is admin"""
     return db.is_admin(user_id)
 
-@admin_router.message(Command("admin"))
-async def admin_panel(message: Message):
-    """
-    Show admin panel
-    """
+async def check_admin_access(message: Message) -> bool:
+    """Check if user has admin access with password verification"""
     user_id = message.from_user.id
     
     if not is_admin(user_id):
         await message.reply("❌ Sizda admin huquqi yo'q!")
+        return False
+    
+    # For now, we'll allow access if user is admin
+    # Password verification is handled in the main admin command
+    return True
+
+@admin_router.message(Command("admin"))
+async def admin_panel(message: Message, state: FSMContext):
+    """
+    Show admin panel with password protection
+    """
+    user_id = message.from_user.id
+    
+    # Check if user is admin first
+    if not is_admin(user_id):
+        await message.reply("❌ Sizda admin huquqi yo'q!")
         return
+    
+    # Ask for password
+    await message.reply("🔐 Admin panelga kirish uchun parol kiriting:")
+    await state.set_state(AdminStates.waiting_for_admin_password)
+
+@admin_router.message(AdminStates.waiting_for_admin_password)
+async def verify_admin_password(message: Message, state: FSMContext):
+    """
+    Verify admin password
+    """
+    user_id = message.from_user.id
+    password = message.text.strip()
+    
+    # Check password
+    if password == "201020":
+        await state.clear()
+        await show_admin_dashboard(message)
+    else:
+        await message.reply("❌ Noto'g'ri parol! Qayta urinib ko'ring yoki /admin buyrug'ini qayta yuboring.")
+        await state.clear()
+
+async def show_admin_dashboard(message: Message):
+    """
+    Show admin dashboard after password verification
+    """
+    user_id = message.from_user.id
     
     # Get statistics
     total_users = db.get_user_count()
@@ -62,6 +102,8 @@ async def admin_panel(message: Message):
     total_admins = len(all_admins) if all_admins else 0
     
     stats_text = f"""👑 **ADMIN PANEL** 👑
+    
+✅ **Parol tasdiqlandi!**
 
 📊 **Statistika:**
 • Jami foydalanuvchilar: {total_users}
