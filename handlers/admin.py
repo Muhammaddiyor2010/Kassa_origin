@@ -58,7 +58,8 @@ async def admin_panel(message: Message):
     total_users = db.get_user_count()
     pro_users = db.get_pro_user_count()
     free_users = db.get_free_user_count()
-    total_admins = len(db.get_all_admins())
+    all_admins = db.get_all_admins()
+    total_admins = len(all_admins) if all_admins else 0
     
     stats_text = f"""👑 **ADMIN PANEL** 👑
 
@@ -91,11 +92,12 @@ async def show_admin_stats(message: Message):
     total_users = db.get_user_count()
     pro_users = db.get_pro_user_count()
     free_users = db.get_free_user_count()
-    total_admins = len(db.get_all_admins())
+    all_admins = db.get_all_admins()
+    total_admins = len(all_admins) if all_admins else 0
     
     # Get recent users (last 10)
-    all_users = db.get_all_users()
-    recent_users = all_users[:10] if all_users else []
+    all_users = db.get_all_users() or []
+    recent_users = all_users[:10] if all_users and len(all_users) > 0 else []
     
     # Calculate percentages
     pro_percentage = (pro_users/total_users*100) if total_users > 0 else 0
@@ -133,7 +135,7 @@ async def show_users(message: Message):
         await message.reply("❌ Sizda admin huquqi yo'q!")
         return
     
-    all_users = db.get_all_users()
+    all_users = db.get_all_users() or []
     
     if not all_users:
         await message.reply("❌ Foydalanuvchilar topilmadi!", reply_markup=admin_menu)
@@ -336,7 +338,8 @@ async def confirm_broadcast(message: Message, state: FSMContext):
     error_count = 0
     error_details = []
     
-    for i, user in enumerate(db.get_all_users()):
+    all_users = db.get_all_users() or []
+    for i, user in enumerate(all_users):
         user_id = user[0]
         user_name = user[1] if len(user) > 1 else f"User {user_id}"
         
@@ -445,7 +448,7 @@ async def return_to_admin_from_broadcast(message: Message, state: FSMContext):
     elif message.text == "👑 Adminlar":
         await show_admins(message)
     elif message.text == "🔙 Asosiy menyu":
-        await back_to_main_from_admin(message)
+        await message.reply("🏠 Asosiy menyuga qaytdingiz", reply_markup=main_menu)
 
 @admin_router.message(AdminStates.waiting_for_broadcast)
 async def process_broadcast(message: Message, state: FSMContext):
@@ -459,7 +462,7 @@ async def process_broadcast(message: Message, state: FSMContext):
     
     # Get all users
     try:
-        all_users = db.get_all_users()
+        all_users = db.get_all_users() or []
         
         if not all_users:
             await message.reply("❌ Foydalanuvchilar topilmadi!", reply_markup=admin_menu)
@@ -514,7 +517,8 @@ async def back_to_admin_panel_from_broadcast(callback: CallbackQuery):
     total_users = db.get_user_count()
     pro_users = db.get_pro_user_count()
     free_users = db.get_free_user_count()
-    total_admins = len(db.get_all_admins())
+    all_admins = db.get_all_admins()
+    total_admins = len(all_admins) if all_admins else 0
     
     stats_text = f"""👑 **ADMIN PANEL** 👑
 
