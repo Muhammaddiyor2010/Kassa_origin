@@ -332,10 +332,7 @@ async def confirm_broadcast(message: Message, state: FSMContext):
     """
     Confirm and start broadcasting
     """
-    if not is_admin(message.from_user.id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        await state.clear()
-        return
+    # Admin check removed - password-only access
     
     data = await state.get_data()
     broadcast_message = data.get('broadcast_message')
@@ -477,10 +474,7 @@ async def process_broadcast(message: Message, state: FSMContext):
     """
     Process and send broadcast message
     """
-    if not is_admin(message.from_user.id):
-        await message.reply("❌ Sizda admin huquqi yo'q!")
-        await state.clear()
-        return
+    # Admin check removed - password-only access
     
     # Get all users
     try:
@@ -762,12 +756,8 @@ async def create_pro_token_callback(callback: CallbackQuery, state: FSMContext):
     print(f"🔍 PRO TOKEN CALLBACK TRIGGERED by user {callback.from_user.id}")
     print(f"🔍 Callback data: {callback.data}")
     
-    if not is_admin(callback.from_user.id):
-        print(f"❌ User {callback.from_user.id} is not admin")
-        await callback.answer("❌ Sizda admin huquqi yo'q!")
-        return
-    
-    print(f"✅ User {callback.from_user.id} is admin, proceeding with PRO token creation")
+    # Admin check removed - password-only access
+    print(f"✅ User {callback.from_user.id} proceeding with PRO token creation")
     
     try:
         # Generate a random PRO token
@@ -919,12 +909,8 @@ async def create_admin_token_callback(callback: CallbackQuery, state: FSMContext
     print(f"🔍 ADMIN TOKEN CALLBACK TRIGGERED by user {callback.from_user.id}")
     print(f"🔍 Callback data: {callback.data}")
     
-    if not is_admin(callback.from_user.id):
-        print(f"❌ User {callback.from_user.id} is not admin")
-        await callback.answer("❌ Sizda admin huquqi yo'q!")
-        return
-    
-    print(f"✅ User {callback.from_user.id} is admin, proceeding with token creation")
+    # Admin check removed - password-only access
+    print(f"✅ User {callback.from_user.id} proceeding with token creation")
     
     try:
         # Generate a random admin token
